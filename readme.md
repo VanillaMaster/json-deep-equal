@@ -1,5 +1,5 @@
 # json-deep-equal
-Tests for deep equality between the json values
+Tests for deep equality between json values
 
 ## installation
 ```
