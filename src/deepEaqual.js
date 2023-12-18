@@ -1,6 +1,6 @@
 /**
  * @typedef { Json[] } JsonArray
- * @typedef { { readonly [key: string]: Json } } JsonObject
+ * @typedef { { [key: string]: Json } } JsonObject
  * @typedef { boolean | number | string | null | JsonObject | JsonArray } Json
 */
 
@@ -45,7 +45,7 @@ function deepEqualObjects(actual, expected) {
     let i = 0;
     for (const key in actual) {
         if (!(key in expected)) return false;
-        if (!deepEqual(actual[key], expected[key])) return false
+        if (!deepEqualAny(actual[key], expected[key])) return false
         i++;
     }
     return i == l;
@@ -59,7 +59,7 @@ function deepEqualObjects(actual, expected) {
 function deepEqualArray(actual, expected) {
     if (actual.length !== expected.length) return false;
     for (let i = 0; i < actual.length; i++) {
-        if (!deepEqual(actual[i], expected[i])) return false;
+        if (!deepEqualAny(actual[i], expected[i])) return false;
     }
     return true;
 }
@@ -70,7 +70,7 @@ function deepEqualArray(actual, expected) {
  * @param { Json} expected 
  * @returns { boolean }
  */
-function deepEqual(actual, expected) {
+function deepEqualAny(actual, expected) {
     const type = getType(actual);
     if (type !== getType(expected)) return false;
     switch (type) {
@@ -88,8 +88,16 @@ function deepEqual(actual, expected) {
 
 }
 
-const wrap = /** @type { (actual: unknown, expected: unknown) => boolean } */(deepEqual);
-
-export {
-    wrap as deepEqual
+/**
+ * Tests for deep equality between the `actual` and `expected` parameters
+ * ```js
+ * const a = { a: [ 42 ], b: "42" }
+ * const b = { b: "42", a: [ 42 ] }
+ * const eaqual = deepEqual(a, b); // true
+ * ```
+ * @param { unknown } actual value to test
+ * @param { unknown } expected value to test agains
+ */
+export default function deepEqual(actual, expected) {
+    return deepEqualAny(/** @type { Json } */(actual), /** @type { JsonObject } */(expected));
 }
