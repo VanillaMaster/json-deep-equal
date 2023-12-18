@@ -1,0 +1,17 @@
+{
+    "name": "json-deep-equal",
+    "version": "1.0.0",
+    "private": true,
+    "description": "deep compare of json objects",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": "./src/deepEaqual.js"
+        }
+    },
+    "files": [
+        "src/**/*"
+    ],
+    "scripts": {},
+    "license": "ISC"
+}
