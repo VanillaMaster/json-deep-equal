@@ -30,8 +30,7 @@ function getType(value) {
             if (value === null) return JSON_TYPE.null;
             if (Array.isArray(value)) return JSON_TYPE.array;
             return JSON_TYPE.object;
-
-        default: throw new Error("unreachable");
+        default: throw new TypeError("unexpected type of value");
     }
 }
 
@@ -41,14 +40,14 @@ function getType(value) {
  * @returns { boolean }
  */
 function deepEqualObjects(actual, expected) {
-    const l = Object.keys(expected).length;
-    let i = 0;
+    let i = 0, j = 0;
+    for (const _ in expected) j++;
     for (const key in actual) {
         if (!(key in expected)) return false;
         if (!deepEqualAny(actual[key], expected[key])) return false
         i++;
     }
-    return i == l;
+    return i === j;
 }
 
 /**
@@ -83,7 +82,7 @@ function deepEqualAny(actual, expected) {
             return deepEqualObjects(/** @type { JsonObject } */(actual), /** @type { JsonObject } */(expected))
         case JSON_TYPE.array:
             return deepEqualArray(/** @type { JsonArray } */(actual), /** @type { JsonArray } */(expected));
-        default: throw new TypeError("unexpected type");
+        default: throw new Error("unreachable");
     }
 
 }
@@ -99,5 +98,5 @@ function deepEqualAny(actual, expected) {
  * @param { unknown } expected value to test agains
  */
 export default function deepEqual(actual, expected) {
-    return deepEqualAny(/** @type { Json } */(actual), /** @type { JsonObject } */(expected));
+    return deepEqualAny(/** @type { Json } */(actual), /** @type { Json } */(expected));
 }

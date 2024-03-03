@@ -1,5 +1,13 @@
 {
-    "name": "json-deep-equal",
+    "author": {
+        "name": "vanilla",
+        "url": "https://github.com/VanillaMaster"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/VanillaMaster/json-deep-equal.git"
+    },
+    "name": "@vanilla/json-deep-equal",
     "version": "1.0.0",
     "private": true,
     "description": "deep compare of json objects",
